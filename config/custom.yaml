@@ -1,0 +1,5 @@
+SERVERLESS_OFFLINE:
+    httpPort: 3000
+    lambdaPort: 3001
+    allowCache: true
+    noPrependStageInUrl: true

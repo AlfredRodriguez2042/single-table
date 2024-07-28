@@ -1,0 +1,24 @@
+{
+  "name": "serverless-dynamodb",
+  "module": "index.ts",
+  "scripts": {
+    "dev": "sls offline start"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-dynamodb": "^3.620.0",
+    "@aws-sdk/lib-dynamodb": "^3.620.0",
+    "@aws-sdk/util-dynamodb": "^3.620.0",
+    "@types/aws-lambda": "^8.10.142",
+    "@types/bun": "latest",
+    "serverless": "3.39.0",
+    "serverless-dynamodb": "^0.2.54",
+    "serverless-esbuild": "^1.52.1",
+    "serverless-offline": "^13.6.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "electrodb": "^2.14.2"
+  }
+}

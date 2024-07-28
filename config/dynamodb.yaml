@@ -1,0 +1,13 @@
+stages:
+  - local
+start:  
+  port: 8000
+  inMemory: true
+  migrate: true
+  seed: true
+  convertEmptyValues: true
+seed:
+  local:
+    sources:
+      - table: users
+        sources: []    

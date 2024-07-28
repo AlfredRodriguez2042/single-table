@@ -1,0 +1,37 @@
+service: serverless-dynamodb
+disabledDeprecations:
+  - "*"
+configValidationMode: off
+frameworkVersion: ^3.39.0
+
+useDotenv: true
+
+provider:
+  name: aws
+  region: 'us-east-1'
+  stage: ${opt:stage, 'local'}
+  runtime: nodejs20.x
+  versionFunctions: false
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 'dynamodb:*'
+          Resource: '*'
+  environment:
+    CLIENT_SECRET: ${env:CLIENT_SECRET}
+plugins:
+  - serverless-esbuild
+  - serverless-dynamodb
+  - serverless-offline
+package:
+  individually: true
+custom:
+  esbuild:
+    config: ./esbuild.config.js
+  serverless-offline: ${file(config/custom.yaml):SERVERLESS_OFFLINE}
+  serverless-dynamodb: ${file(config/dynamodb.yaml)}      
+resources:
+  - ${file(src/users/infrastructure/database/dynamodb.yaml)}    
+functions:
+  - ${file(src/users/routes.yaml)}
