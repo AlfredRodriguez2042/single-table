@@ -1,16 +1,21 @@
-import type { APIGatewayProxyEventV2, APIGatewayProxyHandlerV2, APIGatewayProxyResult, Context } from "aws-lambda"
-import DBClient from "../providers/dynamodb"
+import type { APIGatewayProxyEventV2 } from "aws-lambda"
+import middy from "@middy/core"
+import { AuthMiddeware } from "../middlewares"
+import { UserService } from "../../application/services"
+import { UserRepository } from "../repository/user"
 
-export const findOne: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEventV2, context: Context): Promise<APIGatewayProxyResult> => {
-    console.log("paso", process.env.CLIENT_SECRET)
-    console.log("paso", process.env.TOTAL)
- const res= await   new DBClient().findAll()
- console.log(res)
-    return {
-        statusCode: 200,
-        headers: {
-            "content-type": "application/json; charset=UTF-8"
-        },
-        body: JSON.stringify("hola")
-    }
+const handlers = {
+  findAll: (event: APIGatewayProxyEventV2) => {
+    return UserService(new UserRepository()).findAll()
+  },
+  findOne: (event: APIGatewayProxyEventV2) => {
+    return UserService(new UserRepository()).findOne(event.pathParameters!.id as string)
+  },
+  create:async (event:APIGatewayProxyEventV2)=>{
+    return UserService(new UserRepository()).create(JSON.parse(event.body!))
+  }
 }
+
+export const findAll = middy().use(AuthMiddeware()).handler(handlers.findAll)
+export const findOne = middy().use(AuthMiddeware()).handler(handlers.findOne)
+export const create = middy().use(AuthMiddeware()).handler(handlers.create)

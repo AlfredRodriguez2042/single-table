@@ -1,26 +1,27 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb"
-import { QueryCommand } from "@aws-sdk/lib-dynamodb"
+import { GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb"
+import DBClient from "../../../utils/dbclient"
 
-const config = { endpoint: "http://localhost:8000", region: "us-east-1", credentials: { secretAccessKey: "sasa", accessKeyId: "red" } }
-export default class DBClient {
-    private readonly tableName = "users"
-    private readonly dynamodb: DynamoDBClient
-    constructor() {
-        this.dynamodb = new DynamoDBClient(config)
-    }
-    async findAll(options?: any) {
-        const queryCommand = new QueryCommand({
+export default class ClientDB extends DBClient {
+    async getLastId() {
+        const getCommand = new GetCommand({
             TableName: this.tableName,
-            KeyConditionExpression: "pk = :pk",
+            Key: { pk: "metadata", sk: "metadata" },
+            AttributesToGet: ['lastUserId']
+        })
+        const metadata = await this.dynamodb.send(getCommand)
+        return metadata.Item
+    }
+    async updateLastId() {
+        const updateCommand = new UpdateCommand({
+            TableName: this.tableName,
+            Key: { pk: "metadata", sk: "metadata" },
+            ConditionExpression: "attribute_exists(pk)",
+            UpdateExpression: `SET lastUserId = lastUserId + :val`,
             ExpressionAttributeValues: {
-                ":pk": "USER#"
+                ":val": 1
             }
         })
-        const response = await this.dynamodb.send(queryCommand)
-        return response.Items
+        const metadata = await this.dynamodb.send(updateCommand)
+        return metadata
     }
-    async findOne() { }
-    async create() { }
-    async update() { }
-    async delete() { }
 }
