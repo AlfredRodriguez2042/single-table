@@ -5,6 +5,9 @@
     "dev": "sls offline start"
   },
   "devDependencies": {
+    "@aws-lambda-powertools/logger": "^2.6.0",
+    "@aws-lambda-powertools/metrics": "^2.6.0",
+    "@aws-lambda-powertools/tracer": "^2.6.0",
     "@aws-sdk/client-dynamodb": "^3.620.0",
     "@aws-sdk/lib-dynamodb": "^3.620.0",
     "@aws-sdk/util-dynamodb": "^3.620.0",
@@ -19,6 +22,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@middy/core": "^5.4.5",
     "electrodb": "^2.14.2"
   }
 }
