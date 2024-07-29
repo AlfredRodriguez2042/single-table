@@ -20,6 +20,7 @@ provider:
           Resource: '*'
   environment:
     CLIENT_SECRET: ${env:CLIENT_SECRET}
+    TABLE_NAME: ${env:TABLE_NAME}
 plugins:
   - serverless-esbuild
   - serverless-dynamodb
@@ -32,6 +33,6 @@ custom:
   serverless-offline: ${file(config/custom.yaml):SERVERLESS_OFFLINE}
   serverless-dynamodb: ${file(config/dynamodb.yaml)}      
 resources:
-  - ${file(src/users/infrastructure/database/dynamodb.yaml)}    
+  - ${file(config/resources.yaml)}    
 functions:
   - ${file(src/users/routes.yaml)}

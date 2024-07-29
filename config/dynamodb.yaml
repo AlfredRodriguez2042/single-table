@@ -9,5 +9,5 @@ start:
 seed:
   local:
     sources:
-      - table: users
-        sources: []    
+      - table: ${self:provider.environment.TABLE_NAME}
+        sources: [seeds/users.json]    
