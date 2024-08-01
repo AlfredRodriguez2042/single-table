@@ -36,3 +36,4 @@ resources:
   - ${file(config/resources.yaml)}    
 functions:
   - ${file(src/users/routes.yaml)}
+  - ${file(src/post/routes.yaml)}

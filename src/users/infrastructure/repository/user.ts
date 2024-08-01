@@ -8,7 +8,7 @@ export class UserRepository {
         this.client = new DBClient()
     }
     async findAll() {
-        const users = await this.client.findAll({pk:"USER"})
+        const users = await this.client.findAll({ pk: "USER" })
         return users
     }
     async findOne(options: any) {

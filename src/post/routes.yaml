@@ -1,0 +1,52 @@
+  post-get-all:
+    name: post-get-all
+    handler: src/post/infrastructure/handlers/main.findAll
+    description: get all post
+    reservedConcurrency: 1
+    memorySize: 256
+    timeout: 10
+    environment:
+      TOTAL: ${env:TOTAL}
+    events:
+      - httpApi:
+          path: api/v1/post
+          method: get
+  post-get:
+    name: post-get
+    handler: src/post/infrastructure/handlers/main.findOne
+    description: get a post
+    reservedConcurrency: 1
+    memorySize: 256
+    timeout: 10
+    environment:
+      TOTAL: ${env:TOTAL}
+    events:
+      - httpApi:
+          path: api/v1/post/{id}
+          method: get
+  user-post-get:
+    name: post-get
+    handler: src/post/infrastructure/handlers/main.userPost
+    description: get all post of user
+    reservedConcurrency: 1
+    memorySize: 256
+    timeout: 10
+    environment:
+      TOTAL: ${env:TOTAL}
+    events:
+      - httpApi:
+          path: api/v1/post/user/{id}
+          method: get                      
+  post-post:
+    name: post-create
+    handler: src/post/infrastructure/handlers/main.create
+    description: create a post
+    reservedConcurrency: 1
+    memorySize: 256
+    timeout: 10
+    environment:
+      TOTAL: ${env:TOTAL}
+    events:
+      - httpApi:
+          path: api/v1/post
+          method: post
