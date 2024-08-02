@@ -3,6 +3,7 @@
         "pk":"metadata",
         "lastUserId":0,
         "lastPostId":0,
+        "lastCommentId":0,
         "sk":"metadata"
     }
 ]

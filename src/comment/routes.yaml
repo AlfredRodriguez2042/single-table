@@ -1,0 +1,55 @@
+  get-all-post-comments:
+    name: get-all-post-comments
+    handler: src/comment/infrastructure/handlers/main.postComments
+    description: get all comments of post
+    reservedConcurrency: 1
+    memorySize: 256
+    timeout: 10
+    environment:
+      TOTAL: ${env:TOTAL}
+    events:
+      - httpApi:
+          path: api/v1/comment/post/{postId}
+          method: get
+  comment-get:
+    name: comment-get
+    handler: src/comment/infrastructure/handlers/main.findOne
+    description: get a comment
+    reservedConcurrency: 1
+    memorySize: 256
+    timeout: 10
+    environment:
+      TOTAL: ${env:TOTAL}
+    events:
+      - httpApi:
+          path: api/v1/comment/{postId}
+          method: get
+          request:
+            querystring:
+              commentId: true
+  get-all-user-comments:
+    name: get-all-user-comments
+    handler: src/comment/infrastructure/handlers/main.userComments
+    description: get all comments of user
+    reservedConcurrency: 1
+    memorySize: 256
+    timeout: 10
+    environment:
+      TOTAL: ${env:TOTAL}
+    events:
+      - httpApi:
+          path: api/v1/comment/user/{id}
+          method: get                      
+  comment-create:
+    name: comment-create
+    handler: src/comment/infrastructure/handlers/main.create
+    description: create a comment
+    reservedConcurrency: 1
+    memorySize: 256
+    timeout: 10
+    environment:
+      TOTAL: ${env:TOTAL}
+    events:
+      - httpApi:
+          path: api/v1/comment
+          method: post

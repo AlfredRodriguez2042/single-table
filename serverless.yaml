@@ -37,3 +37,4 @@ resources:
 functions:
   - ${file(src/users/routes.yaml)}
   - ${file(src/post/routes.yaml)}
+  - ${file(src/comment/routes.yaml)}

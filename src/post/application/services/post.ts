@@ -18,7 +18,7 @@ export const PostService = (client: any) => ({
             sk: `USER#id_${post.authorId}`
         }
         const author = await client.findOne(userKeys, { select: ['id', 'email'] })
-        const result ={ ...PostEntity.fromItem(post),author}
+        const result = { ...PostEntity.fromItem(post), author }
         return SuccessResponse(result)
     },
     userPost: async (userId: string) => {
