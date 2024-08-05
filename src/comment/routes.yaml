@@ -53,3 +53,29 @@
       - httpApi:
           path: api/v1/comment
           method: post
+  comment-like-create:
+    name: comment-like-create
+    handler: src/comment/infrastructure/handlers/main.commentLiked
+    description: create a like on comment
+    reservedConcurrency: 1
+    memorySize: 256
+    timeout: 10
+    environment:
+      TOTAL: ${env:TOTAL}
+    events:
+      - httpApi:
+          path: api/v1/comment/like
+          method: post
+  comment-like-delete:
+    name: comment-like-delete
+    handler: src/comment/infrastructure/handlers/main.deleteCommentLike
+    description: delete like on comment
+    reservedConcurrency: 1
+    memorySize: 256
+    timeout: 10
+    environment:
+      TOTAL: ${env:TOTAL}
+    events:
+      - httpApi:
+          path: api/v1/comment/like
+          method: delete                      

@@ -1,5 +1,5 @@
-import { NotFoundResponse, SuccessResponse } from "../../utils/responses";
-import { CommentEntity } from "../domain/comment.entity";
+import { CreatedResponse, NotFoundResponse, SuccessResponse } from "../../utils/responses";
+import { CommentEntity } from "../domain/entities/comment";
 import type { Comment } from "../domain/comment.model";
 import type { IClientProvider } from "../domain/ports";
 
@@ -28,8 +28,8 @@ export const CommentService = (Client: IClientProvider) => ({
     create: async (body: Comment) => {
         const { lastCommentId } = await Client.getLastId('lastCommentId')
         const comment = new CommentEntity({ ...body, id: lastCommentId + 1 })
-        await Client.create(comment.toItem())
+        await Client.createTransaction(comment.toItem(),{keys:{pk:"POST",sk:`POST#id_${body.postId}`},field:"commentCount"})
         await Client.updateLastId('lastCommentId')
-        return SuccessResponse(CommentEntity.fromItem(comment))
+        return CreatedResponse(CommentEntity.fromItem(comment))
     }
 })

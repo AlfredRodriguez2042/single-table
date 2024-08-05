@@ -1,4 +1,4 @@
-import { NotFoundResponse, SuccessResponse } from "../../../utils/responses"
+import { CreatedResponse, NotFoundResponse, SuccessResponse } from "../../../utils/responses"
 import { PostEntity } from "../../domain/entities/post"
 import type { Post } from "../../domain/models/post"
 
@@ -30,6 +30,11 @@ export const PostService = (client: any) => ({
         const model = new PostEntity({ ...body, id: lastPostId + 1 })
         await client.create(model.toItem())
         await client.updateLastId('lastPostId')
-        return SuccessResponse(PostEntity.fromItem(model as any))
+        return CreatedResponse(PostEntity.fromItem(model as any))
+    },
+    update: async (id:string,values:Partial<Post>)=>{
+        const model = new PostEntity({id})
+        const comment =await  client.update(model.keys,values)
+        return SuccessResponse(PostEntity.fromItem(comment))
     }
 })

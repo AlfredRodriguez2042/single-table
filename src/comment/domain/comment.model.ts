@@ -7,3 +7,11 @@ export interface Comment {
     isPublish: boolean
     createdAt: string
 }
+
+export interface Like{
+    id:number
+    commentId:number
+    postId:number
+    userId:number
+    createdAt:string
+}

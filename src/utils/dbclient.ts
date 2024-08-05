@@ -1,5 +1,5 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb"
-import { GetCommand, PutCommand, QueryCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb"
+import { DeleteCommand, GetCommand, PutCommand, QueryCommand, TransactWriteCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb"
 interface keys {
     sk: string
     pk: string
@@ -58,7 +58,15 @@ export default class DBClient {
         const response = await this.dynamodb.send(command)
         return response.Attributes
     }
-    async delete() { }
+    async delete(keys: any) {
+        const command = new DeleteCommand({
+            TableName: this.tableName,
+            Key: keys,
+            ReturnValues: "ALL_OLD"
+        })
+        const deleted = await this.dynamodb.send(command)
+        return deleted
+    }
     async getLastId(id: string): Promise<Record<string, number>> {
         const getCommand = new GetCommand({
             TableName: this.tableName,
@@ -81,4 +89,28 @@ export default class DBClient {
         const metadata = await this.dynamodb.send(updateCommand)
         return metadata
     }
+    async createTransaction(item: any, updateItem: any) {
+        const putCommand = new PutCommand({
+            TableName: this.tableName,
+            Item: item
+        })
+        const updateCommand = new UpdateCommand({
+            TableName: this.tableName,
+            Key: updateItem.keys,
+            ConditionExpression: "attribute_exists(pk)",
+            UpdateExpression: `set ${updateItem.field} = ${updateItem.field} + :inc`,
+            ExpressionAttributeValues: {
+                ":inc": 1
+            }
+
+        })
+        const command = new TransactWriteCommand({
+            TransactItems: [
+                { Put: putCommand.input }, { Update: updateCommand.input as any }
+            ]
+        })
+        await this.dynamodb.send(command)
+        return item
+    }
+
 }

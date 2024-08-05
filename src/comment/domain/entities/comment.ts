@@ -1,6 +1,5 @@
-import { Item } from "../../utils/baseEntity";
-import type { Comment } from "./comment.model";
-
+import { Item } from "../../../utils/baseEntity"
+import type { Comment } from "../comment.model"
 
 export class CommentEntity extends Item{
    public id: number

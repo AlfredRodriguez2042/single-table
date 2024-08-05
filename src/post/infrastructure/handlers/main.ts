@@ -1,6 +1,7 @@
 import type { APIGatewayProxyEventV2 } from "aws-lambda";
 import { PostService } from "../../application/services/post";
 import DBClient from "../providers/client";
+import { LikeService } from "../../application/services/like";
 
 // export const handlers = {
 //     findAll:async (event:APIGatewayProxyEventV2)=>{
@@ -25,4 +26,7 @@ export const userPost = async (event: APIGatewayProxyEventV2) => {
 }
 export const create = async (event: APIGatewayProxyEventV2) => {
     return PostService(new DBClient()).create(JSON.parse(event.body!))
+}
+export const postLiked = async (event: APIGatewayProxyEventV2) => {
+    return LikeService(new DBClient()).create(JSON.parse(event.body!))
 }

@@ -8,4 +8,6 @@ export interface IClientProvider {
     create: (comment: Comment) => Promise<Comment>
     findCommemtsPost: (query: { pk: string }) => Promise<Comment[]>
     findCommemtsUser: (options: FindOptions) => Promise<Comment[]>
+    createTransaction:(keys:any,updateItem:any)=>Promise<any>
+    delete:(keys:any)=>Promise<any>
 }

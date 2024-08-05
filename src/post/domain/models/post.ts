@@ -9,3 +9,9 @@ export interface Post {
     isPublish:boolean,
     createdAt:string
 }
+export interface Like{
+    id:number
+    postId:number
+    userId:number
+    createdAt:string
+}
