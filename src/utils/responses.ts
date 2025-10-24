@@ -1,6 +1,6 @@
-import type { APIGatewayProxyResultV2 } from "aws-lambda"
+import type { APIGatewayProxyResultV2,APIGatewayProxyStructuredResultV2 } from "aws-lambda"
 
-const generateResponse = (statusCode: number, body: string) => {
+const generateResponse = (statusCode: number, body: string):APIGatewayProxyStructuredResultV2 => {
     return {
         statusCode,
         headers: {
@@ -9,7 +9,7 @@ const generateResponse = (statusCode: number, body: string) => {
         body
     }
 }
-export const SuccessResponse = <T>(data: T): APIGatewayProxyResultV2 => {
+export const SuccessResponse = <T>(data: T): APIGatewayProxyStructuredResultV2 => {
     const status = 200
     const body = JSON.stringify({
         data,
@@ -18,7 +18,7 @@ export const SuccessResponse = <T>(data: T): APIGatewayProxyResultV2 => {
     })
     return generateResponse(status, body)
 }
-export const CreatedResponse = <T>(data: T): APIGatewayProxyResultV2 => {
+export const CreatedResponse = <T>(data: T): APIGatewayProxyStructuredResultV2 => {
     const status = 201
     const body = JSON.stringify({
         data,
@@ -27,7 +27,7 @@ export const CreatedResponse = <T>(data: T): APIGatewayProxyResultV2 => {
     })
     return generateResponse(status, body)
 }
-export const NotFoundResponse = (message: string): APIGatewayProxyResultV2 => {
+export const NotFoundResponse = (message: string): APIGatewayProxyStructuredResultV2 => {
     const status = 404
     const body = JSON.stringify({
         data: null,

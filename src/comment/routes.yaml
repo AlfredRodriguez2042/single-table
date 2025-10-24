@@ -1,81 +1,90 @@
-  get-all-post-comments:
-    name: get-all-post-comments
+functions:
+  comments-by-post:
+    name: comments-by-post
     handler: src/comment/infrastructure/handlers/main.postComments
-    description: get all comments of post
-    reservedConcurrency: 1
+    description: Get all comments of a post
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/comment/post/{postId}
           method: get
-  comment-get:
-    name: comment-get
+          path: /api/v1/posts/{postId}/comments
+          cors: true
+          # authorizer: jwtAuthorizer
+
+  comments-get-by-id:
+    name: comments-get-by-id
     handler: src/comment/infrastructure/handlers/main.findOne
-    description: get a comment
-    reservedConcurrency: 1
+    description: Get a comment by id
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/comment/{postId}
           method: get
-          request:
-            querystring:
-              commentId: true
-  get-all-user-comments:
-    name: get-all-user-comments
+          path: /api/v1/comments/{commentId}
+          cors: true
+          # authorizer: jwtAuthorizer
+
+  comments-by-user:
+    name: comments-by-user
     handler: src/comment/infrastructure/handlers/main.userComments
-    description: get all comments of user
-    reservedConcurrency: 1
+    description: Get all comments of a user
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/comment/user/{id}
-          method: get                      
-  comment-create:
-    name: comment-create
+          method: get
+          path: /api/v1/users/{userId}/comments
+          cors: true
+          # authorizer: jwtAuthorizer
+
+  comments-create:
+    name: comments-create
     handler: src/comment/infrastructure/handlers/main.create
-    description: create a comment
-    reservedConcurrency: 1
+    description: Create a comment under a post
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/comment
           method: post
-  comment-like-create:
-    name: comment-like-create
+          path: /api/v1/posts/{postId}/comments
+          cors: true
+          # authorizer: jwtAuthorizer
+
+  comment-likes-create:
+    name: comment-likes-create
     handler: src/comment/infrastructure/handlers/main.commentLiked
-    description: create a like on comment
-    reservedConcurrency: 1
+    description: Like a comment (idempotent)
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/comment/like
           method: post
-  comment-like-delete:
-    name: comment-like-delete
+          path: /api/v1/comments/{commentId}/likes
+          cors: true
+          # authorizer: jwtAuthorizer
+
+  comment-likes-delete:
+    name: comment-likes-delete
     handler: src/comment/infrastructure/handlers/main.deleteCommentLike
-    description: delete like on comment
-    reservedConcurrency: 1
+    description: Remove like from a comment
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/comment/like
-          method: delete                      
+          method: delete
+          path: /api/v1/comments/{commentId}/likes
+          cors: true
+          # authorizer: jwtAuthorizer

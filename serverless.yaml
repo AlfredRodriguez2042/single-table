@@ -11,6 +11,7 @@ provider:
   region: 'us-east-1'
   stage: ${opt:stage, 'local'}
   runtime: nodejs20.x
+  architecture: arm64 
   versionFunctions: false
   iam:
     role:

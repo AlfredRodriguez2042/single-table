@@ -1,65 +1,76 @@
-  post-get-all:
-    name: post-get-all
+functions:
+  posts-get-all:
+    name: posts-get-all
     handler: src/post/infrastructure/handlers/main.findAll
-    description: get all post
-    reservedConcurrency: 1
+    description: Get all posts
+    # reservedConcurrency: 1   # ⚠️ Quitar salvo que necesites serializar
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/post
           method: get
-  post-get:
-    name: post-get
+          path: /api/v1/posts
+          cors: true
+          # authorizer: jwtAuthorizer   # ← define en 'provider.httpApi.authorizers'
+
+  posts-get-by-id:
+    name: posts-get-by-id
     handler: src/post/infrastructure/handlers/main.findOne
-    description: get a post
-    reservedConcurrency: 1
+    description: Get a post by id
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/post/{id}
           method: get
-  user-post-get:
-    name: post-get
+          path: /api/v1/posts/{id}
+          cors: true
+          # authorizer: jwtAuthorizer
+
+  users-get-posts:
+    name: users-get-posts
     handler: src/post/infrastructure/handlers/main.userPost
-    description: get all post of user
-    reservedConcurrency: 1
+    description: Get all posts for a user
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/post/user/{id}
-          method: get                      
-  post-post:
-    name: post-create
+          method: get
+          path: /api/v1/users/{userId}/posts
+          cors: true
+          # authorizer: jwtAuthorizer
+
+  posts-create:
+    name: posts-create
     handler: src/post/infrastructure/handlers/main.create
-    description: create a post
-    reservedConcurrency: 1
+    description: Create a post
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/post
           method: post
-  post-liked-post:
-    name: post-like-create
+          path: /api/v1/posts
+          cors: true
+          # authorizer: jwtAuthorizer
+
+  posts-like-create:
+    name: posts-like-create
     handler: src/post/infrastructure/handlers/main.postLiked
-    description: create a like on post
-    reservedConcurrency: 1
+    description: Create a like on a post (idempotent)
     memorySize: 256
     timeout: 10
     environment:
       TOTAL: ${env:TOTAL}
     events:
       - httpApi:
-          path: api/v1/post/like
-          method: post          
+          method: post
+          path: /api/v1/posts/{id}/likes
+          cors: true
+          # authorizer: jwtAuthorizer
